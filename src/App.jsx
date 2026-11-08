@@ -68,8 +68,12 @@ export default function App() {
       )}
       {user && role === "admin" ? (
         <AdminDashboard user={user} onLogout={logout} loading={loading} />
-      ) : user ? (
+      ) : user && role === "user" ? (
         <AccountPage onLogout={logout} loading={loading} />
+      ) : user ? (
+        <div className="flex justify-end p-5">
+          <Button variant="outline" onClick={logout} disabled={loading}>Đăng xuất</Button>
+        </div>
       ) : (
         <LoginPage onGoogleLogin={loginWithGoogle} loading={loading} />
       )}

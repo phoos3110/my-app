@@ -9,7 +9,7 @@ import { syncUserProfile } from "@/services/userService";
 
 export function useAuth() {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState(null);
   const [checking, setChecking] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -30,21 +30,23 @@ export function useAuth() {
         unsubscribeRole = () => {};
         currentUid.current = currentUser?.uid || null;
         setUser(currentUser);
-        setRole("user");
+        setRole(null);
         setError("");
         if (!currentUser) setProfileError("");
-        setChecking(false);
+        setChecking(Boolean(currentUser));
         if (!currentUser) return;
         unsubscribeRole = watchUserRole(
           currentUser.uid,
           (nextRole) => {
             if (currentRevision !== revision) return;
             setRole(nextRole);
+            setChecking(nextRole === null);
             setError("");
           },
           (err) => {
             if (currentRevision !== revision) return;
-            setRole("user");
+            setRole(null);
+            setChecking(false);
             setError(
               `Không thể đọc quyền tài khoản. Hãy thử lại. (${err.code})`,
             );
@@ -56,7 +58,7 @@ export function useAuth() {
         unsubscribeRole();
         currentUid.current = null;
         setUser(null);
-        setRole("user");
+        setRole(null);
         setError(`Không thể kiểm tra phiên đăng nhập. (${err.code})`);
         setChecking(false);
       },

@@ -17,7 +17,7 @@ export default function ActionToast({ message, type }) {
 
   return (
     <div
-      className="fixed inset-x-5 bottom-5 z-50 mx-auto flex max-w-md items-center gap-3 rounded-xl border bg-white p-4 shadow-lg"
+      className="fixed inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-50 mx-auto flex max-w-md animate-in slide-in-from-top-full fade-in duration-300 items-center gap-3 rounded-xl border bg-white p-4 shadow-lg motion-reduce:animate-none"
       role={type === "error" ? "alert" : "status"}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
